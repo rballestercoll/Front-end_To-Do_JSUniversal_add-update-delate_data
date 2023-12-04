@@ -1,0 +1,235 @@
+/*========== INTERFAZ 1 ==========*/
+/* Dashboard */
+.margen-top-sm {
+  margin-top: 10px;
+}
+
+.margen-top-lg {
+  margin-top: 30px;
+}
+
+.margem-bottom-xl {
+  margin-bottom: 50px;
+}
+
+.padding-sm {
+  padding: 10px;
+}
+
+.padding-md {
+  margin-top: 50px;
+}
+#semester-list {
+  display: flex;
+}
+/* color tarjetas */
+.colorfondo-rojo {
+  background-color: #e96767;
+}
+
+.colorfondo-naranja {
+  background-color: #f18e4c;
+}
+
+.colorfondo-mostaza {
+  background-color: #ffdc60;
+}
+
+.colorfondo-verde {
+  background-color: #8bff8b;
+}
+
+.colorfondo-turquesa {
+  background-color: #9afafa;
+}
+
+.colorfondo-azul {
+  background-color: #8cddf8;
+}
+
+.colorfondo-lila {
+  background-color: #c8adeb;
+}
+
+.colorfondo-rosa {
+  background-color: #ffb6c1;
+}
+
+.card-body {
+  padding: 0px;
+}
+
+.card-title {
+  padding: 10px;
+}
+
+.card-text {
+  min-height: 120px;
+  text-align: left;
+  font-size: 12px;
+}
+
+.h5 {
+  padding: 0;
+}
+
+.navbar-collapse {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.bi-list {
+  font-size: 2em; /* Puedes ajustar el valor según el tamaño deseado */
+}
+
+.nav-item .dropdow {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.nav-item.dropdow .dropdown-menu {
+  position: absolute;
+  top: 100%; /* Aparecerá justo debajo del elemento que lo desencadena */
+  right: 0;
+}
+
+#eliminar {
+  margin-left: 50px;
+}
+
+#añadir {
+  background-color: #e2e0e0;
+  color: black;
+  border: 2px solid rgb(255, 255, 255);
+}
+
+#añadir-semestre {
+  background-color: #37ff9b;
+  color: black;
+  border: 2px solid rgb(255, 255, 255);
+}
+
+.text-right {
+  text-align: right;
+}
+#semester-list {
+  display: flex;
+  flex-wrap: wrap; /* Asegura que las tarjetas se envuelvan a la siguiente línea cuando no haya suficiente espacio */
+  justify-content: space-between; /* Distribuye el espacio entre las tarjetas */
+}
+
+/*========== INTERFAZ 2 ==========*/
+
+/* Estilo del cuerpo */
+body {
+  background-color: #c0d8f0; /* Fondo celeste */
+  text-align: center;
+  padding: 20px;
+}
+
+/* Estilo del título */
+
+/* Estilizar el elemento modal-header */
+.modal-header {
+  background-color: rgba(
+    128,
+    128,
+    128,
+    0.395
+  ); /* Establecer el fondo en color gris (cambia "gray" al color deseado) */
+}
+
+/* Estilizar el elemento modal-title */
+.modal-title {
+  width: 100%;
+  margin: 0 auto; /* Centrar horizontalmente el título dentro de modal-title */
+  color: black; /* Establecer el color del texto en blanco (cambia "white" al color de texto deseado) */
+}
+
+/* Altura del campo descripción*/
+#exampleFormControlTextarea1 {
+  height: 4em; /* Ajusta el valor según el espacio deseado */
+}
+
+/* Estilo para el rango y contenedor de etiquetas */
+.form-range {
+  position: relative;
+}
+
+.range-labels {
+  position: absolute;
+  top: -25px; /* Ajusta la posición vertical según sea necesario */
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #000; /* Color de texto */
+  font-weight: bold;
+}
+
+.current-value {
+  position: absolute;
+  top: -45px; /* Ajusta la posición vertical según sea necesario */
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+}
+
+/* Estilo del contenedor de etiquetas y valores */
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: -10px; /* Ajusta la posición vertical según sea necesario */
+}
+
+/* Estilo de los valores mínimo, máximo y actual */
+.range-labels span {
+  font-weight: bold;
+}
+
+/*ESTILO BOTON CREAR */
+.modal-footer button {
+  margin: 0 auto; /* Centra el botón horizontalmente */
+  display: block; /* Hace que el botón sea un bloque para la alineación */
+}
+
+/*========== INTERFAZ 3 ==========*/
+.corner-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+/* CSS personalizado para hacer el botón más ancho */
+.btn-g-wider {
+  width: 120px; /* Puedes ajustar este valor según tus necesidades */
+}
+
+.btn-g {
+  background-color: green;
+  color: white;
+  width: 150px;
+  height: 50px;
+  position: relative;
+  top: 100px;
+}
+
+.matematicas-card {
+  height: 70%;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: right;
+}
+
+.column {
+  width: 100%;
+  margin: 0 10px; /* Agregamos un margen horizontal de 10px entre las columnas */
+  min-height: 500px;
+  position: relative;
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 15px;
+}
