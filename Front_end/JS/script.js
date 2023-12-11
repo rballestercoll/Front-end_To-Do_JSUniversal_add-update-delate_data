@@ -126,6 +126,11 @@ function drawModalSemester(index) {
     });
   });
 
+  // ADJUNTAR ARCHIVO 
+  var field_archivo =
+    '<div class="mb-3"><label for="archivo" class="form-label">Adjuntar Archivo</label><input type="file" class="form-control" id="archivo" name="archivo"></div>';
+
+
   // Preparamos HTML de cada campo del formulario
   var field_numSemester =
     '<select class="form-select" id="numSemester" name="numSemester" aria-label="Default select example"><option selected>Selecciona un semestre</option>' +
@@ -179,6 +184,12 @@ function drawModalSemester(index) {
     '</div><div class="mb-3">' +
     field_difficulty +
     '</div></div><div class="modal-footer"><button type="submit" class="btn btn-primary">Guardar</button></div></form></div></div></div>';
+    field_archivo +
+    '</div><div class="modal-footer"><button type="submit" class="btn btn-primary">Guardar</button></div></form></div></div></div>';
+
+    // Inserta el campo de archivo en el formulario
+    formHtml = formHtml.replace("</form>", field_archivo + "</form>");
+
 
   // Borramos el formulario si existe y lo insertamos en el DOM
   $("#modal-semestre").remove();
