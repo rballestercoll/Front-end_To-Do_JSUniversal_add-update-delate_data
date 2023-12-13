@@ -45,14 +45,16 @@ const Subjectresolvers = {
           },
     },
     Mutation: {
-        async createSubject(parent, { SubjectInput }, context, info) {
+        async createSubject(parent, { SubjectInput }, { io }, context, info) {
           const { name, year, dateStart, dateEnd, color, description, opinion, difficulty, status  } = SubjectInput; 
           const newSubject = new Subject({ name, year, dateStart, dateEnd, color, description, opinion, difficulty, status });
           await newSubject.save();
+          io.emit('subjectCreada', { status: "ok", message: "Se ha creado una Asignatura" });
           return newSubject;
         },
-        async deleteSubject(_, { id }) {
+        async deleteSubject(_, { id }, { io }) {
             await Subject.findByIdAndDelete(id);
+            io.emit('subjectEliminada', { status: "ok", message: "Se ha eliminado una Asignatura" });
             return "Task Deleted";
         },
         async updateSubjectState(_, { id, newState }) {
