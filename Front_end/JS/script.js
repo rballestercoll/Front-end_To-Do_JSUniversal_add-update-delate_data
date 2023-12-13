@@ -61,9 +61,7 @@ function drawSemester(index, semester) {
       index +
       ')">editar<a href="interfaz_3.html" class="btn btn-primary" id="añadir" onclick="drawModalSemester(' +
       index +
-      ')">Ver</a><button class="btn btn-danger" id="eliminar" onclick="eliminar(' +
-      index +
-      ')"><i class="fas fa-trash"></i></button></div></div></div></div>'
+      ')">Ver</a><button class="btn btn-danger" id="eliminar" onclick="eliminarSemestre(\'' + index +  '\');"><i class="fas fa-trash"></i></button></div></div></div></div>'
   ).appendTo("#semester-list");
 }
 
@@ -191,6 +189,8 @@ form.addEventListener(
   async function (event) {
     event.preventDefault();
 
+    console.log("test");
+
     // Validar el formulario
     if (!form.checkValidity()) {
       form.classList.add("was-validated");
@@ -203,8 +203,11 @@ form.addEventListener(
       values[field.name] = field.value;
     });
 
+    values.numSemester = parseInt(values.numSemester);
+    values.difficulty = parseInt(values.difficulty);
+
     // Enviar la información al servidor GraphQL
-    const response = await fetch('https://n22twm-3000.csb.app/api', {
+    const response = await fetch('/api', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -245,7 +248,9 @@ form.addEventListener(
     }
 
     // Volvemos a dibujar las tarjetas de semestres (opcional)
-    drawSemesters(semestersData);
+    //drawSemesters(semestersData);
+    limpiarSemestres();
+    cargarSemestres();
 
     // Cerrar el modal
     $("#modal-semestre").modal("hide");
