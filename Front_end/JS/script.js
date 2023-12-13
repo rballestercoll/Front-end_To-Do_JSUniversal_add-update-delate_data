@@ -306,3 +306,25 @@ $(document).ready(function () {
   drawSemesters(semestersData);
   //drawSelectsemester(semestersData);
 });
+
+var socket = io.connect('https://n22twm-3000.csb.app/api'); // Conectarse al servidor Socket.IO
+
+socket.on('semestreCreado', function(data) {
+    if (data.status === "ok") {
+        console.log(data.message); // Muestra el mensaje de confirmación
+        alert(data.message);
+        cargarSemestresDesdeAPI(); // Actualizar la lista de semestres
+    } else {
+        console.error("Error al crear el semestre:", data.message);
+    }
+});
+
+socket.on('semestreEliminado', function(data) {
+    if (data.status === "ok") {
+        console.log(data.message); // Muestra el mensaje de confirmación
+        alert(data.message);
+        cargarSemestresDesdeAPI(); // Actualizar la lista de semestres
+    } else {
+        console.error("Error al eliminar el semestre:", data.message);
+    }
+});
