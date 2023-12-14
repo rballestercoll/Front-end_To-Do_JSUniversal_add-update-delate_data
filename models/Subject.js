@@ -25,7 +25,10 @@ const subjectSchema = new Schema({
   },
   status: {
     type: String,
-  }
+  },
+  attachedFile: {
+    type: Buffer,
+  },
 });
 
 module.exports = model("Subject", subjectSchema);

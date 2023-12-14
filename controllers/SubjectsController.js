@@ -2,7 +2,8 @@ const { gql } = require("apollo-server-express");
 const Subject = require("../models/Subject");
 
 const SubjecttypeDefs = gql`
-
+  scalar Upload  // Añade este escalar para manejar archivos adjuntos
+  
   type Subject {
     id: ID,
     name: String,
@@ -13,10 +14,7 @@ const SubjecttypeDefs = gql`
     opinion: String,
     difficulty: Int,
     status: String,
-    attachment: attachedFile
-    fileData: Buffer,
-    fileContentType: String,
-    fileName: String,
+    attachedFile: Upload  # Añade este campo para manejar archivos adjuntos
   }
 
   input SubjectInput {
@@ -28,6 +26,7 @@ const SubjecttypeDefs = gql`
     opinion: String
     difficulty: Int
     status: String
+    attachedFile: Upload  # Añade este campo para manejar archivos adjuntos
   }   
 
   type Query {
@@ -42,7 +41,9 @@ const SubjecttypeDefs = gql`
 `; 
 
 const Subjectresolvers = {
-    Query: {
+  Upload: GraphQLUpload,  // Añade este resolver para GraphQLUpload
+  
+  Query: {
         helloSubject: () => "Hello world",
         getAllSubjects: async () => {
             const subjects = await Subject.find();  
@@ -51,11 +52,39 @@ const Subjectresolvers = {
     },
     Mutation: {
         async createSubject(parent, { SubjectInput }, context, info) {
-          const { name, year, dateStart, dateEnd, color, description, opinion, difficulty, status  } = SubjectInput; 
-          const newSubject = new Subject({ name, year, dateStart, dateEnd, color, description, opinion, difficulty, status });
+          const { name, year, dateStart, dateEnd, color, description, opinion, difficulty, status, attachedFile  } = SubjectInput; 
+
+          // Lógica para manejar el archivo adjunto
+  let attachedFileData;
+  if (attachedFile) {
+    const { createReadStream, filename, mimetype, encoding } = await attachedFile;
+
+    // Crea una función para convertir el stream a un Buffer
+    const streamToBuffer = async (stream) => {
+      return new Promise((resolve, reject) => {
+        const chunks = [];
+        stream.on('data', (chunk) => chunks.push(chunk));
+        stream.on('end', () => resolve(Buffer.concat(chunks)));
+        stream.on('error', (error) => reject(error));
+      });
+    };
+
+    // Convierte el stream del archivo a un Buffer
+    const fileBuffer = await streamToBuffer(createReadStream());
+
+  // Almacena el Buffer directamente en la base de datos MongoDB
+attachedFileData = { data: fileBuffer, contentType: mimetype, filename };
+
+// Almacenamos el Buffer directamente en el campo attachedFile
+newSubject.attachedFile = attachedFileData;
+
+      // Crear la nueva asignatura con el archivo adjunto
+          const newSubject = new Subject({ name, year, dateStart, dateEnd, color, description, opinion, difficulty, status, attachedFile: attachedFileData });
           await newSubject.save();
           return newSubject;
         },
+
+
         async deleteSubject(_, { id }) {
             await Subject.findByIdAndDelete(id);
             return "Task Deleted";
