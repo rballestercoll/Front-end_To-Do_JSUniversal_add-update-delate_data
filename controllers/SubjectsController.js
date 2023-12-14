@@ -2,8 +2,9 @@ const { gql } = require("apollo-server-express");
 const Subject = require("../models/Subject");
 
 const SubjecttypeDefs = gql`
+
   type Subject {
-    id: ID
+    id: ID,
     name: String,
     dateStart: String,
     dateEnd: String,
@@ -12,6 +13,10 @@ const SubjecttypeDefs = gql`
     opinion: String,
     difficulty: Int,
     status: String,
+    attachment: attachedFile
+    fileData: Buffer,
+    fileContentType: String,
+    fileName: String,
   }
 
   input SubjectInput {
