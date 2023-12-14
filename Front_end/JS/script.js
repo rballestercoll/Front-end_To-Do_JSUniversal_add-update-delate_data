@@ -59,7 +59,7 @@ function drawSemester(index, semester) {
       semester.difficulty +
       '</p><a href="#" class="btn btn-primary" id="añadir" onclick="drawModalSemester(' +
       index +
-      ')">editar<a href="interfaz_3.html" class="btn btn-primary" id="añadir" onclick="drawModalSemester(' +
+      ')">editar<a href="interfaz_3.html?id='+index+'" class="btn btn-primary" id="añadir" onclick="drawModalSemester(' +
       index +
       ')">Ver</a><button class="btn btn-danger" id="eliminar" onclick="eliminarSemestre(\'' + index +  '\');"><i class="fas fa-trash"></i></button></div></div></div></div>'
   ).appendTo("#semester-list");
@@ -307,7 +307,8 @@ $(document).ready(function () {
   //drawSelectsemester(semestersData);
 });
 
-var socket = io.connect('https://n22twm-3000.csb.app/api'); // Conectarse al servidor Socket.IO
+/*
+var socket = io.connect('./api'); // Conectarse al servidor Socket.IO
 
 socket.on('semestreCreado', function(data) {
     if (data.status === "ok") {
@@ -328,3 +329,5 @@ socket.on('semestreEliminado', function(data) {
         console.error("Error al eliminar el semestre:", data.message);
     }
 });
+
+*/

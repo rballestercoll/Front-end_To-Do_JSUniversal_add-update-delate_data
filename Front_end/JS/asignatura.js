@@ -2,6 +2,9 @@ var columnaDest = 0;
 var editar = false;
 var tempIndex = 0;
 
+let params = new URLSearchParams(document.location.search);
+let semestre_id = params.get("id");
+
 // Datos JSON de las Cards
 var asignaturasData = {
   "23241": {
@@ -171,8 +174,11 @@ $("#guardarAsignatura").click(function () {
       description: descripcion,
       opinion: opinion,
       difficulty: dificultad,
-      status: "asignaturas-pending"
+      status: "asignaturas-pending",
+      id_semestre: semestre_id,
     };
+
+    console.log(newSubject);
 
     // Añadir el nuevo sujeto a los datos
     var newIndex = Date.now().toString();
@@ -193,13 +199,19 @@ $("#guardarAsignatura").click(function () {
 
   }
 
+  crearAsignatura(newSubject);
+
   // Ocultar el modal
   $("#modalAsignatura").modal("hide");
 });
 
 // Función de documento listo
 $(document).ready(function () {
-  drawAsignaturas(asignaturasData);
+
+  limpiarAsignaturas();
+  cargarAsignaturas();
+
+  //drawAsignaturas(asignaturasData);
 });
 
 /*
@@ -209,26 +221,142 @@ $("#select-semana").change(function () {
 });
 */
 
-fetch('http://localhost:3000/api', {
-  method: 'POST',
-  headers: {'Content-Type': "application/json"},
-  body: JSON.stringify({
-    query: `
-    query {
-      getAllSemestre {
-        id
-        numSemester
-        opinion
-        dateStart
-        dateEnd
-        description
-        difficulty
+function cargarAsignaturas()
+{
+  fetch('./api', {
+    method: 'POST',
+    headers: {'Content-Type': "application/json"},
+    body: JSON.stringify({
+      query: `
+      query GetAllSubjects {
+        getAllSubjects {
+          id
+          id_semestre
+          name
+          dateStart
+          dateEnd
+          description
+          opinion
+          status
+          color
+        }
       }
-    }
-    `
+      `
+    })
   })
-})
-.then(res => res.json())
-.then(data => {
-  console.log(data.data)
-})
+  .then(res => res.json())
+  .then(data => {
+    console.log(data.data.getAllSubjects)
+  
+    data.data.getAllSubjects.forEach(subject => {
+
+      if (subject.id_semestre == semestre_id)
+      {
+        let asignatura = {color:subject.color, name:subject.name, status:subject.status, dateStart:subject.dateStart, dateEnd:subject.dateEnd, description:subject.description, opinion:subject.opinion, difficulty:subject.difficulty};
+        drawAsignatura(subject.id, asignatura);
+      }
+  
+      
+    });
+  })
+}
+
+
+function crearAsignatura(newSubject)
+{
+  newSubject.difficulty = parseInt(newSubject.difficulty);
+
+  console.log(newSubject);
+
+  fetch('./api', {
+    method: 'POST',
+    headers: {'Content-Type': "application/json"},
+    body: JSON.stringify({
+      query: `
+      mutation CreateSubject($subjectInput: SubjectInput) {
+        createSubject(SubjectInput: $subjectInput) {
+          id
+          id_semestre
+          name
+          dateStart
+          dateEnd
+          description
+          opinion
+          difficulty
+        }
+      }
+      `,
+      variables: {
+        subjectInput: newSubject,
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log(data);
+    limpiarAsignaturas();
+    cargarAsignaturas();
+  })
+}
+
+function eliminarAsignatura(id)
+{
+  var values = {};
+  values["ID"] = id;
+
+  fetch('./api', {
+    method: 'POST',
+    headers: {'Content-Type': "application/json"},
+    body: JSON.stringify({
+      query: `
+      mutation DeleteSubject($deleteSubjectId: ID) {
+        deleteSubject(id: $deleteSubjectId)
+      }
+      `,
+      variables: {
+        deleteSubjectId: id,
+      }
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    limpiarAsignaturas();
+    cargarAsignaturas();
+  })
+}
+
+
+
+function drawAsignatura(index, asignatura) {
+  var card = `
+    <div class="margen-top-lg col-sm-4 ${asignatura.status}" id="${index}">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title" style="background-color: ${asignatura.color};">
+            Asignatura: <span class="nombre-${index}">${asignatura.name}</span>
+          </h5>
+          <div class="padding-sm">
+            <p class="card-text">
+              Fecha inicio: <span class="fecha-inicio-${index}">${asignatura.dateStart}</span><br>
+              Fecha fin: <span class="fecha-fin-${index}">${asignatura.dateEnd}</span><br>
+              Descripción: <span class="descripcion-${index}">${asignatura.description}</span><br>
+              Opinión: <span class="opinion-${index}">${asignatura.opinion}</span><br>
+              Dificultad: <span class="dificultad-${index}">${asignatura.difficulty}</span>
+            </p>
+            <a href="#" class="btn btn-primary" id="editarAsignatura" onclick="drawModalAsignaturaEditar('${index}')">Editar</a>
+            <button class="btn btn-danger" id="eliminar" onclick="eliminarAsignatura('${index}')"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  $("#asignaturas-pending").append(card);
+
+}
+
+function limpiarAsignaturas()
+{
+  $("#asignaturas-pending").html("");
+}
+

@@ -45,10 +45,8 @@ function cargarSemestres()
 
 function eliminarSemestre(id)
 {
-  console.log("test2");
   var values = {};
   values["ID"] = id;
-  console.log(values);
 
   fetch('./api', {
     method: 'POST',

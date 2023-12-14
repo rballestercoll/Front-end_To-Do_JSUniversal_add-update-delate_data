@@ -25,6 +25,9 @@ const subjectSchema = new Schema({
   },
   status: {
     type: String,
+  },
+  id_semestre: {
+    type: String,
   }
 });
 

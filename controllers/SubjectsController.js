@@ -12,6 +12,7 @@ const SubjecttypeDefs = gql`
     opinion: String,
     difficulty: Int,
     status: String,
+    id_semestre: String,
   }
 
   input SubjectInput {
@@ -23,6 +24,7 @@ const SubjecttypeDefs = gql`
     opinion: String
     difficulty: Int
     status: String
+    id_semestre: String
   }   
 
   type Query {
@@ -46,8 +48,8 @@ const Subjectresolvers = {
     },
     Mutation: {
         async createSubject(parent, { SubjectInput }, { io }, context, info) {
-          const { name, year, dateStart, dateEnd, color, description, opinion, difficulty, status  } = SubjectInput; 
-          const newSubject = new Subject({ name, year, dateStart, dateEnd, color, description, opinion, difficulty, status });
+          const { name, dateStart, dateEnd, color, description, opinion, difficulty, status, id_semestre  } = SubjectInput; 
+          const newSubject = new Subject({ name, dateStart, dateEnd, color, description, opinion, difficulty, status, id_semestre });
           await newSubject.save();
           io.emit('subjectCreada', { status: "ok", message: "Se ha creado una Asignatura" });
           return newSubject;
